@@ -1,0 +1,346 @@
+[
+  {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "text": "this is normal text"
+      }
+    ]
+  },
+  {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "text": "this is text with "
+      },
+      {
+        "type": "text",
+        "text": "bold",
+        "bold": true
+      },
+      {
+        "type": "text",
+        "text": " and "
+      },
+      {
+        "type": "text",
+        "text": "italic",
+        "italic": true
+      },
+      {
+        "type": "text",
+        "text": "  and "
+      },
+      {
+        "type": "text",
+        "text": "underlined",
+        "underline": true
+      },
+      {
+        "text": " or even ",
+        "type": "text"
+      },
+      {
+        "type": "text",
+        "text": "striked",
+        "strikethrough": true
+      }
+    ]
+  },
+  {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "text": "and multiple "
+      },
+      {
+        "type": "text",
+        "text": "modifers at once",
+        "bold": true,
+        "italic": true,
+        "underline": true
+      }
+    ]
+  },
+  {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "text": "we also have some "
+      },
+      {
+        "type": "text",
+        "text": "code",
+        "code": true
+      }
+    ]
+  },
+  {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "text": "and "
+      },
+      {
+        "type": "link",
+        "url": "http://asdf.de",
+        "children": [
+          {
+            "type": "text",
+            "text": "links"
+          }
+        ]
+      },
+      {
+        "text": "",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "type": "heading",
+    "children": [
+      {
+        "type": "text",
+        "text": "now titles: header 1"
+      }
+    ],
+    "level": 1
+  },
+  {
+    "type": "heading",
+    "children": [
+      {
+        "type": "text",
+        "text": "header 2"
+      }
+    ],
+    "level": 2
+  },
+  {
+    "type": "heading",
+    "children": [
+      {
+        "type": "text",
+        "text": "header 3 "
+      }
+    ],
+    "level": 3
+  },
+  {
+    "type": "image",
+    "image": {
+      "name": "cdreier_gopher_small.jpg",
+      "alternativeText": "cdreier_gopher_small.jpg",
+      "url": "http://localhost:1337/uploads/cdreier_gopher_small_a32e6e2b51.jpg",
+      "caption": null,
+      "width": 256,
+      "height": 256,
+      "formats": {
+        "thumbnail": {
+          "name": "thumbnail_cdreier_gopher_small.jpg",
+          "hash": "thumbnail_cdreier_gopher_small_a32e6e2b51",
+          "ext": ".jpg",
+          "mime": "image/jpeg",
+          "path": null,
+          "width": 156,
+          "height": 156,
+          "size": 6.49,
+          "sizeInBytes": 6489,
+          "url": "/uploads/thumbnail_cdreier_gopher_small_a32e6e2b51.jpg"
+        }
+      },
+      "hash": "cdreier_gopher_small_a32e6e2b51",
+      "ext": ".jpg",
+      "mime": "image/jpeg",
+      "size": 13.2,
+      "previewUrl": null,
+      "provider": "local",
+      "provider_metadata": null,
+      "createdAt": "2024-09-29T12:25:08.715Z",
+      "updatedAt": "2024-09-29T12:25:08.715Z"
+    },
+    "children": [
+      {
+        "type": "text",
+        "text": ""
+      }
+    ]
+  },
+  {
+    "type": "quote",
+    "children": [
+      {
+        "type": "text",
+        "text": "this does support block quotes"
+      }
+    ]
+  },
+  {
+    "type": "code",
+    "children": [
+      {
+        "type": "text",
+        "text": "func andCodeBlocks() string {\n  return \"with multilines\"\n}"
+      }
+    ],
+    "language": "plaintext"
+  },
+  {
+    "type": "list",
+    "format": "unordered",
+    "children": [
+      {
+        "type": "list-item",
+        "children": [
+          {
+            "type": "text",
+            "text": "this is unorderlist"
+          }
+        ]
+      },
+      {
+        "type": "list-item",
+        "children": [
+          {
+            "type": "text",
+            "text": "list 1"
+          }
+        ]
+      },
+      {
+        "type": "list-item",
+        "children": [
+          {
+            "type": "text",
+            "text": "list 2"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "format": "unordered",
+        "indentLevel": 1,
+        "children": [
+          {
+            "type": "list-item",
+            "children": [
+              {
+                "type": "text",
+                "text": "sublist 1"
+              }
+            ]
+          },
+          {
+            "type": "list-item",
+            "children": [
+              {
+                "type": "text",
+                "text": "sublist 2"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list-item",
+        "children": [
+          {
+            "type": "text",
+            "text": "list 3"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "text": ""
+      }
+    ]
+  },
+  {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "text": "and ordererd"
+      }
+    ]
+  },
+  {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "text": ""
+      }
+    ]
+  },
+  {
+    "type": "list",
+    "format": "ordered",
+    "children": [
+      {
+        "type": "list-item",
+        "children": [
+          {
+            "type": "text",
+            "text": " one"
+          }
+        ]
+      },
+      {
+        "type": "list-item",
+        "children": [
+          {
+            "type": "text",
+            "text": "two"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "format": "ordered",
+        "indentLevel": 1,
+        "children": [
+          {
+            "type": "list-item",
+            "children": [
+              {
+                "type": "text",
+                "text": "two.a"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "list-item",
+        "children": [
+          {
+            "type": "text",
+            "text": "three"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "text": ""
+      }
+    ]
+  }
+]
