@@ -45,39 +45,99 @@ type Image struct {
 	URL             string `json:"url"`
 }
 
-func Render(blocks []Block) string {
-	out := internalRender(blocks)
+type ParagraphRenderer interface {
+	RenderParagraph(Block) string
+}
+type TextRenderer interface {
+	RenderText(Block) string
+}
+type ListRenderer interface {
+	RenderList(Block) string
+}
+type ListItemRenderer interface {
+	RenderListItem(Block) string
+}
+type HeadingRenderer interface {
+	RenderHeading(Block) string
+}
+type LinkRenderer interface {
+	RenderLink(Block) string
+}
+type ImageRenderer interface {
+	RenderImage(Block) string
+}
+type QuoteRenderer interface {
+	RenderQuote(Block) string
+}
+type CodeRenderer interface {
+	RenderCode(Block) string
+}
+
+type Renderer struct {
+	ParagraphRenderer ParagraphRenderer
+	TextRenderer      TextRenderer
+	ListRenderer      ListRenderer
+	ListItemRenderer  ListItemRenderer
+	HeadingRenderer   HeadingRenderer
+	LinkRenderer      LinkRenderer
+	ImageRenderer     ImageRenderer
+	QuoteRenderer     QuoteRenderer
+	CodeRenderer      CodeRenderer
+}
+
+func New() *Renderer {
+	r := &Renderer{}
+	r.ParagraphRenderer = r
+	r.TextRenderer = r
+	r.ListRenderer = r
+	r.ListItemRenderer = r
+	r.HeadingRenderer = r
+	r.LinkRenderer = r
+	r.ImageRenderer = r
+	r.QuoteRenderer = r
+	r.CodeRenderer = r
+
+	return r
+}
+
+func (r *Renderer) Render(blocks []Block) string {
+	out := r.internalRender(blocks)
 	return gohtml.Format(out)
 }
 
-func internalRender(blocks []Block) string {
+func Render(blocks []Block) string {
+	r := New()
+	return r.Render(blocks)
+}
+
+func (r *Renderer) internalRender(blocks []Block) string {
 	out := strings.Builder{}
 	for _, block := range blocks {
-		out.WriteString(block.Render())
+		out.WriteString(r.renderBlock(block))
 	}
 	return out.String()
 }
 
-func (b Block) Render() string {
+func (r *Renderer) renderBlock(b Block) string {
 	switch b.Type {
 	case BlockTypeParagraph:
-		return b.RenderParagraph()
+		return r.ParagraphRenderer.RenderParagraph(b)
 	case BlockTypeText:
-		return b.RenderText()
+		return r.TextRenderer.RenderText(b)
 	case BlockTypeList:
-		return b.RenderList()
+		return r.ListRenderer.RenderList(b)
 	case BlockTypeListItem:
-		return b.RenderListItem()
+		return r.ListItemRenderer.RenderListItem(b)
 	case BlockTypeHeading:
-		return b.RenderHeading()
+		return r.HeadingRenderer.RenderHeading(b)
 	case BlockTypeLink:
-		return b.RenderLink()
+		return r.LinkRenderer.RenderLink(b)
 	case BlockTypeImage:
-		return b.RenderImage()
+		return r.ImageRenderer.RenderImage(b)
 	case BlockTypeQuote:
-		return b.RenderQuote()
+		return r.QuoteRenderer.RenderQuote(b)
 	case BlockTypeCode:
-		return b.RenderCode()
+		return r.CodeRenderer.RenderCode(b)
 	}
 	return "unsupported block type"
 }
@@ -86,14 +146,14 @@ func (b Block) EmptyText() bool {
 	return b.Type == BlockTypeText && (b.Text == nil || (b.Text != nil && *b.Text == ""))
 }
 
-func (b Block) RenderParagraph() string {
+func (r *Renderer) RenderParagraph(b Block) string {
 	if len(b.Children) == 1 && b.Children[0].EmptyText() {
 		return "<br />"
 	}
-	return fmt.Sprintf("<p>%s</p>", internalRender(b.Children))
+	return fmt.Sprintf("<p>%s</p>", r.internalRender(b.Children))
 }
 
-func (b Block) RenderText() string {
+func (r *Renderer) RenderText(b Block) string {
 	out := *b.Text
 	if b.Bold != nil && *b.Bold {
 		out = fmt.Sprintf("<strong>%s</strong>", out)
@@ -113,61 +173,61 @@ func (b Block) RenderText() string {
 	return out
 }
 
-func (b Block) RenderList() string {
+func (r *Renderer) RenderList(b Block) string {
 	if b.Format != nil && *b.Format == string(ListFormatUnordered) {
-		return fmt.Sprintf("<ul>%s</ul>", internalRender(b.Children))
+		return fmt.Sprintf("<ul>%s</ul>", r.internalRender(b.Children))
 	}
 	if b.Format != nil && *b.Format == string(ListFormatOrdered) {
-		return fmt.Sprintf("<ol>%s</ol>", internalRender(b.Children))
+		return fmt.Sprintf("<ol>%s</ol>", r.internalRender(b.Children))
 	}
 	return "unsupported list"
 }
-func (b Block) RenderListItem() string {
-	return fmt.Sprintf("<li>%s</li>", internalRender(b.Children))
+func (r *Renderer) RenderListItem(b Block) string {
+	return fmt.Sprintf("<li>%s</li>", r.internalRender(b.Children))
 }
-func (b Block) RenderHeading() string {
+func (r *Renderer) RenderHeading(b Block) string {
 	if b.Level == nil {
 		return *b.Text
 	}
 	switch *b.Level {
 	case 1:
-		return fmt.Sprintf("<h1>%s</h1>", internalRender(b.Children))
+		return fmt.Sprintf("<h1>%s</h1>", r.internalRender(b.Children))
 	case 2:
-		return fmt.Sprintf("<h2>%s</h2>", internalRender(b.Children))
+		return fmt.Sprintf("<h2>%s</h2>", r.internalRender(b.Children))
 	case 3:
-		return fmt.Sprintf("<h3>%s</h3>", internalRender(b.Children))
+		return fmt.Sprintf("<h3>%s</h3>", r.internalRender(b.Children))
 	case 4:
-		return fmt.Sprintf("<h4>%s</h4>", internalRender(b.Children))
+		return fmt.Sprintf("<h4>%s</h4>", r.internalRender(b.Children))
 	case 5:
-		return fmt.Sprintf("<h5>%s</h5>", internalRender(b.Children))
+		return fmt.Sprintf("<h5>%s</h5>", r.internalRender(b.Children))
 	case 6:
-		return fmt.Sprintf("<h6>%s</h6>", internalRender(b.Children))
+		return fmt.Sprintf("<h6>%s</h6>", r.internalRender(b.Children))
 	}
 
 	return *b.Text
 }
 
-func (b Block) RenderImage() string {
+func (r *Renderer) RenderImage(b Block) string {
 	if b.Image == nil {
 		return "missing image"
 	}
 	return fmt.Sprintf("<img src=%q alt=%q />", b.Image.URL, b.Image.AlternativeText)
 }
 
-func (b Block) RenderCode() string {
+func (r *Renderer) RenderCode(b Block) string {
 	// TODO: there is a "language" attribute - react renderer also ignore it
-	return fmt.Sprintf("<pre><code>%s</code></pre>", internalRender(b.Children))
+	return fmt.Sprintf("<pre><code>%s</code></pre>", r.internalRender(b.Children))
 }
 
-func (b Block) RenderQuote() string {
-	return fmt.Sprintf("<blockquote>%s</blockquote>", internalRender(b.Children))
+func (r *Renderer) RenderQuote(b Block) string {
+	return fmt.Sprintf("<blockquote>%s</blockquote>", r.internalRender(b.Children))
 }
 
-func (b Block) RenderLink() string {
+func (r *Renderer) RenderLink(b Block) string {
 	url := "#"
 	if b.URL != nil {
 		url = *b.URL
 	}
 
-	return fmt.Sprintf(`<a href=%q>%s</a>`, url, internalRender(b.Children))
+	return fmt.Sprintf(`<a href=%q>%s</a>`, url, r.internalRender(b.Children))
 }
